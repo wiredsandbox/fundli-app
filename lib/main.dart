@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_guard/pages/auth_screens/login_screen.dart';
 import 'package:pocket_guard/utilities/constants.dart';
+import 'package:provider/provider.dart';
+
+import 'provider/user_auth_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserAuthProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

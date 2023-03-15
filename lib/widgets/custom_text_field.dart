@@ -33,9 +33,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ? Colors.black.withOpacity(0.8)
         : widget.color!.withOpacity(0.8);
 
+    final size = MediaQuery.of(context).size;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: size.height * 0.03),
         Text(
           widget.label,
           style: TextStyle(
