@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pocket_guard/pages/auth_screens/forgot_password.dart';
 import 'package:pocket_guard/pages/auth_screens/sign_up_screen.dart';
-import 'package:pocket_guard/pages/home_page.dart';
 import 'package:pocket_guard/utilities/constants.dart';
 import 'package:pocket_guard/widgets/custom_button.dart';
 import 'package:pocket_guard/widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
 
+import '../../provider/user_auth_provider.dart';
 import '../../utilities/page_navigation.dart';
+import '../../utilities/show_snack_bar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -39,45 +40,64 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
         child: Column(
           children: [
-            CustomTextField(
-              label: 'Email',
-              controller: _emailController,
-              hintText: "Enter your email",
-              obscureText: false,
-              textInputType: TextInputType.text,
-              suffixWidget: null,
-            ),
-            SizedBox(height: size.height * 0.03),
-            CustomTextField(
-              label: 'Password',
-              controller: _passwordController,
-              hintText: "Enter your password",
-              obscureText: showPassword,
-              textInputType: TextInputType.visiblePassword,
-              suffixWidget: InkWell(
-                onTap: () {
-                  setState(() {
-                    showPassword = !showPassword;
-                  });
-                },
-                child: Icon(
-                  showPassword ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.black,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    CustomTextField(
+                      label: 'Email',
+                      controller: _emailController,
+                      hintText: "Enter your email",
+                      obscureText: false,
+                      textInputType: TextInputType.text,
+                      suffixWidget: null,
+                    ),
+                    CustomTextField(
+                      label: 'Password',
+                      controller: _passwordController,
+                      hintText: "Enter your password",
+                      obscureText: showPassword,
+                      textInputType: TextInputType.visiblePassword,
+                      suffixWidget: InkWell(
+                        onTap: () {
+                          setState(() {
+                            showPassword = !showPassword;
+                          });
+                        },
+                        child: Icon(
+                          showPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.15),
             CustomButton(
               padding: EdgeInsets.symmetric(
                 vertical: 20,
-                horizontal: size.width * 0.35,
+                horizontal: size.width * 0.3,
               ),
               borderColor: Colors.black,
               color: Colors.black,
               borderRadius: 20,
-              onTap: () {
-                PageNavigation()
-                    .replacePage(context: context, page: const HomePage());
+              onTap: () async {
+                if (_emailController.text.isNotEmpty &&
+                    _passwordController.text.isNotEmpty) {
+                  await context.read<UserAuthProvider>().loginUser(
+                        context: context,
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      );
+                } else {
+                  showSnackBar(
+                    context: context,
+                    text: "Please make sure all forms are filled",
+                  );
+                }
               },
               child: const Text(
                 "Log in",
@@ -87,21 +107,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            TextButton(
-              onPressed: () {
-                PageNavigation().pushPage(
-                  context: context,
-                  page: const ForgotPassword(),
-                );
-              },
-              child: const Text(
-                "Forgot password",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            // TextButton(
+            //   onPressed: () {
+            //     PageNavigation().pushPage(
+            //       context: context,
+            //       page: const ForgotPassword(),
+            //     );
+            //   },
+            //   child: const Text(
+            //     "Forgot password",
+            //     style: TextStyle(
+            //       fontSize: 16,
+            //       fontWeight: FontWeight.bold,
+            //     ),
+            //   ),
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

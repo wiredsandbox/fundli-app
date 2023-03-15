@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pocket_guard/models/user_auth_model.dart';
+import 'package:pocket_guard/provider/user_auth_provider.dart';
 import 'package:pocket_guard/utilities/constants.dart';
 import 'package:pocket_guard/widgets/account_card.dart';
 import 'package:pocket_guard/widgets/expense_tile.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,9 +14,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String name = "SpielerEinzig";
   @override
   Widget build(BuildContext context) {
+    UserAuthModel userAuthModel =
+        context.read<UserAuthProvider>().getUserAuthModel;
     return Scaffold(
       appBar: AppBar(
         title: RichText(
@@ -27,7 +31,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               TextSpan(
-                text: 'Hey $name!',
+                text: 'Hey ${userAuthModel.firstName}!',
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 16,

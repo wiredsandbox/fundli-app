@@ -39,13 +39,13 @@ class _AccountCardState extends State<AccountCard> {
             children: [
               const Text(
                 "Total balance",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   color: Colors.grey,
                 ),
               ),
               Text(
-                "\$${widget.balance}",
+                "₦${widget.balance}",
                 style: const TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.w500,
