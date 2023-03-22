@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pocket_guard/pages/auth_screens/login_screen.dart';
+import 'package:pocket_guard/pages/splash_screen.dart';
 import 'package:pocket_guard/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
