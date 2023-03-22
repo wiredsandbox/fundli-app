@@ -81,7 +81,7 @@ class _AuthHomeState extends State<AuthHome> {
                         color: kPrimary,
                         borderRadius: 8,
                         onTap: () {
-                          _navigation.pushPage(
+                          _navigation.replacePage(
                             context: context,
                             page: const LoginScreen(),
                           );
@@ -98,7 +98,7 @@ class _AuthHomeState extends State<AuthHome> {
                         color: Colors.white,
                         borderRadius: 8,
                         onTap: () {
-                          _navigation.pushPage(
+                          _navigation.replacePage(
                             context: context,
                             page: const SignUp(),
                           );

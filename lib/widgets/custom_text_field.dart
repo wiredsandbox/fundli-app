@@ -7,15 +7,21 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
   final String label;
   final Color? color;
+  final int? maxLines;
+  final TextStyle? labelTextStyle;
   final TextEditingController controller;
   final bool obscureText;
   final TextInputType textInputType;
   final Widget? suffixWidget;
   final List<TextInputFormatter>? inputFormatters;
+  final double? topPadding;
   const CustomTextField({
     Key? key,
+    this.maxLines,
     this.inputFormatters,
     this.color,
+    this.topPadding,
+    this.labelTextStyle,
     required this.label,
     required this.controller,
     required this.hintText,
@@ -40,17 +46,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: size.height * 0.019),
+        SizedBox(height: widget.topPadding ?? size.height * 0.019),
         Text(
           widget.label,
-          style: TextStyle(
-            fontSize: 18,
-            color: kPrimary.withOpacity(1),
-            fontWeight: FontWeight.bold,
-          ),
+          style: widget.labelTextStyle ??
+              TextStyle(
+                fontSize: 18,
+                color: kPrimary.withOpacity(1),
+                fontWeight: FontWeight.bold,
+              ),
         ),
         const SizedBox(height: 10),
         TextField(
+          maxLines: widget.maxLines ?? 1,
           inputFormatters: widget.inputFormatters,
           controller: widget.controller,
           keyboardType: widget.textInputType,
