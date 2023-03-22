@@ -30,7 +30,7 @@ class _CreateTransactionsState extends State<CreateTransactions> {
       context: context,
       initialDate: date,
       firstDate: DateTime(1900, 1, 1),
-      lastDate: date);
+      lastDate: DateTime.now());
 
   Future<TimeOfDay?> pickTime() async =>
       showTimePicker(context: context, initialTime: TimeOfDay.now());
@@ -92,6 +92,7 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                           await context
                               .read<TransactionProvider>()
                               .createTransaction(
+                                  context: context,
                                   token: userAuthModel.token,
                                   name: _descriptionController.text,
                                   amount: double.parse(_amountController.text),
@@ -100,8 +101,7 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                         } else {
                           showSnackBar(
                               context: context,
-                              text:
-                                  "Please make sure you enter all parameters");
+                              text: "Please make sure you enter all fields");
                         }
                       },
                     ),

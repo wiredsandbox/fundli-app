@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:pocket_guard/utilities/rfc339.dart';
 
 import '../models/transaction_model.dart';
 import '../utilities/constants.dart';
@@ -48,7 +48,7 @@ class TransactionService {
     }
   }
 
-  Future<TransactionModel?> createTransaction({
+  Future<TransactionModel?> createNewTransaction({
     required String token,
     required String name,
     required double amount,
@@ -58,28 +58,31 @@ class TransactionService {
     try {
       String endpoint = "transaction";
 
-      final response = await http.post(
-        Uri.parse("$baseUrl$endpoint"),
-        headers: {"Authorization": "Bearer $token"},
-        body: jsonEncode({
+      Dio dio = Dio();
+
+      dio.options.headers.addAll({"Authorization": "Bearer $token"});
+
+      final response = await dio.post(
+        "$baseUrl$endpoint",
+        data: {
           "name": name,
           "amount": amount,
-          "timestamp": toRfc3339String(time),
+          "timestamp": time.toUtc().toIso8601String(),
           "kind": kind,
-        }),
+        },
       );
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        final data = jsonDecode(utf8.decode(response.bodyBytes));
+      final data = response.data;
 
-        print(data);
-      } else {
-        debugPrint("Error code: ${response.statusCode}");
-        debugPrint(response.body);
-        return null;
-      }
+      return TransactionModel(
+          id: data['id'],
+          createdAt: DateTime.parse(data['createdAt']),
+          amount: data['amount'],
+          name: data['name'],
+          kind: data['kind'],
+          updatedAt: DateTime.parse(data['updatedAt']));
     } catch (e) {
-      debugPrint("Caught error with sign up service: $e");
+      debugPrint("Caught error with transaction service: $e");
       return null;
     }
   }

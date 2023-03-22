@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pocket_guard/models/transaction_model.dart';
+import 'package:timeago/timeago.dart' as ago;
 
 class ExpenseTile extends StatefulWidget {
-  final String title;
-  final String time;
-  final double amount;
-  final String type;
+  final TransactionModel transactionModel;
   const ExpenseTile({
     Key? key,
-    required this.title,
-    required this.time,
-    required this.amount,
-    required this.type,
+    required this.transactionModel,
   }) : super(key: key);
 
   @override
@@ -40,9 +36,11 @@ class _ExpenseTileState extends State<ExpenseTile> {
                 color: const Color(0xffFFECEC),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: const Icon(
-                Icons.shopping_cart,
-                color: Colors.black,
+              child: Icon(
+                Icons.attach_money,
+                color: widget.transactionModel.kind == "INCOME"
+                    ? Colors.green
+                    : Colors.red,
                 size: 27,
               ),
             ),
@@ -52,14 +50,14 @@ class _ExpenseTileState extends State<ExpenseTile> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  widget.title,
+                  widget.transactionModel.name,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
                 ),
                 Text(
-                  widget.time,
+                  ago.format(widget.transactionModel.createdAt),
                   style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 15,
@@ -73,14 +71,14 @@ class _ExpenseTileState extends State<ExpenseTile> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "-\$${widget.amount}",
+                  "${widget.transactionModel.kind == "INCOME" ? "" : "-"}₦${widget.transactionModel.amount}",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),
                 Text(
-                  widget.type,
+                  widget.transactionModel.kind,
                   style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 15,
