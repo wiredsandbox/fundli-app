@@ -39,7 +39,7 @@ class UserAuthProvider with ChangeNotifier {
     }
   }
 
-  loginUser({
+  Future loginUser({
     required context,
     required String email,
     required String password,
@@ -57,6 +57,20 @@ class UserAuthProvider with ChangeNotifier {
       );
     } else {
       showSnackBar(context: context, text: "An error occurred");
+    }
+  }
+
+  Future fetchUserAccount() async {
+    try {
+      UserAuthModel? fetchedData =
+          await _authService.fetchUserAccount(token: _userAuthModel.token);
+
+      if (fetchedData != null) {
+        _userAuthModel = fetchedData;
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint("Error fetching user data: $e");
     }
   }
 }

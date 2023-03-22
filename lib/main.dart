@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pocket_guard/pages/auth_screens/login_screen.dart';
+import 'package:pocket_guard/pages/splash_screen.dart';
+import 'package:pocket_guard/provider/transaction_provider.dart';
 import 'package:pocket_guard/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserAuthProvider()),
+        ChangeNotifierProvider(create: (_) => TransactionProvider()),
       ],
       child: const MyApp(),
     ),
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
