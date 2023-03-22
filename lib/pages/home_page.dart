@@ -1,11 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pocket_guard/models/user_auth_model.dart';
 import 'package:pocket_guard/pages/create_transactions.dart';
+import 'package:pocket_guard/provider/transaction_provider.dart';
 import 'package:pocket_guard/provider/user_auth_provider.dart';
 import 'package:pocket_guard/utilities/constants.dart';
 import 'package:pocket_guard/utilities/page_navigation.dart';
 import 'package:pocket_guard/widgets/account_card.dart';
-import 'package:pocket_guard/widgets/expense_tile.dart';
+import 'package:pocket_guard/widgets/transaction_list.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,10 +19,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late UserAuthModel userAuthModel;
+  int page = 0;
+
+  fetchData() async {
+    await context.read<UserAuthProvider>().fetchUserAccount();
+
+    await Future.delayed(const Duration(milliseconds: 0), () async {
+      userAuthModel = context.read<UserAuthProvider>().getUserAuthModel;
+
+      await context
+          .read<TransactionProvider>()
+          .fetchUserTransactionList(token: userAuthModel.token, page: page);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    UserAuthModel userAuthModel =
-        context.read<UserAuthProvider>().getUserAuthModel;
+    userAuthModel = context.watch<UserAuthProvider>().getUserAuthModel;
 
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -64,15 +87,15 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {},
+        //     icon: const Icon(
+        //       Icons.search,
+        //       color: Colors.black,
+        //     ),
+        //   ),
+        // ],
         centerTitle: false,
         elevation: 0,
         backgroundColor: kScaffoldBackground,
@@ -92,27 +115,14 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const AccountCard(incoming: 20000.1, outgoing: 50),
-            const SizedBox(height: 16),
-            const Text(
-              "Today’s Transactions",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-            ),
+            AccountCard(
+                incoming: context.watch<TransactionProvider>().getTotal(true),
+                outgoing: context.watch<TransactionProvider>().getTotal(false)),
             const SizedBox(height: 25),
             Expanded(
-              child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return const ExpenseTile(
-                    title: "Github",
-                    time: "11: 00 AM",
-                    amount: 60.01,
-                    type: "Debit",
-                  );
-                },
+              child: TransactionList(
+                transactionList:
+                    context.watch<TransactionProvider>().getTransactionList,
               ),
             ),
           ],

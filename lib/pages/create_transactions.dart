@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:pocket_guard/models/user_auth_model.dart';
+import 'package:pocket_guard/provider/user_auth_provider.dart';
 import 'package:pocket_guard/utilities/constants.dart';
 import 'package:pocket_guard/utilities/page_navigation.dart';
+import 'package:pocket_guard/utilities/show_snack_bar.dart';
 import 'package:pocket_guard/widgets/add_transaction/add_transaction_category.dart';
 import 'package:pocket_guard/widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
 
+import '../provider/transaction_provider.dart';
 import '../widgets/circular_button.dart';
 
 class CreateTransactions extends StatefulWidget {
@@ -16,11 +21,43 @@ class CreateTransactions extends StatefulWidget {
 class _CreateTransactionsState extends State<CreateTransactions> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  List<String> kind = ["INCOME", "EXPENSE"];
+  DateTime date = DateTime.now();
   int typeIndex = 0;
   int categoryIndex = 0;
+
+  Future<DateTime?> pickDate() async => showDatePicker(
+      context: context,
+      initialDate: date,
+      firstDate: DateTime(1900, 1, 1),
+      lastDate: date);
+
+  Future<TimeOfDay?> pickTime() async =>
+      showTimePicker(context: context, initialTime: TimeOfDay.now());
+
+  pickDateTime() async {
+    DateTime? newDate = await pickDate();
+    if (newDate == null) return;
+
+    TimeOfDay? newTime = await pickTime();
+    if (newTime == null) return;
+
+    setState(() {
+      date = DateTime(
+        newDate.year,
+        newDate.month,
+        newDate.day,
+        newTime.hour,
+        newTime.minute,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    UserAuthModel userAuthModel =
+        context.read<UserAuthProvider>().getUserAuthModel;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -49,7 +86,24 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                     ),
                     CircularButton(
                       iconData: Icons.check,
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (_amountController.text.isNotEmpty &&
+                            _descriptionController.text.isNotEmpty) {
+                          await context
+                              .read<TransactionProvider>()
+                              .createTransaction(
+                                  token: userAuthModel.token,
+                                  name: _descriptionController.text,
+                                  amount: double.parse(_amountController.text),
+                                  time: date,
+                                  kind: kind[typeIndex]);
+                        } else {
+                          showSnackBar(
+                              context: context,
+                              text:
+                                  "Please make sure you enter all parameters");
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -86,51 +140,51 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                     }
                   ],
                 ),
-                AddTransactionCategory(
-                  categoryName: "Category",
-                  currentSelected: categoryIndex,
-                  buttonDetails: [
-                    {
-                      'label': 'Shopping',
-                      'icon': const {
-                        'iconData': Icons.shopping_bag_outlined,
-                        'color': Colors.green,
-                        'containerIcon': false,
-                      },
-                      'onTap': () {
-                        setState(() {
-                          categoryIndex = 0;
-                        });
-                      }
-                    },
-                    {
-                      'label': 'Food',
-                      'icon': const {
-                        'iconData': Icons.fastfood_outlined,
-                        'color': Colors.green,
-                        'containerIcon': false,
-                      },
-                      'onTap': () {
-                        setState(() {
-                          categoryIndex = 1;
-                        });
-                      }
-                    },
-                    {
-                      'label': 'Transport',
-                      'icon': const {
-                        'iconData': Icons.car_repair_outlined,
-                        'color': Colors.green,
-                        'containerIcon': false,
-                      },
-                      'onTap': () {
-                        setState(() {
-                          categoryIndex = 2;
-                        });
-                      }
-                    },
-                  ],
-                ),
+                // AddTransactionCategory(
+                //   categoryName: "Category",
+                //   currentSelected: categoryIndex,
+                //   buttonDetails: [
+                //     {
+                //       'label': 'Shopping',
+                //       'icon': const {
+                //         'iconData': Icons.shopping_bag_outlined,
+                //         'color': Colors.green,
+                //         'containerIcon': false,
+                //       },
+                //       'onTap': () {
+                //         setState(() {
+                //           categoryIndex = 0;
+                //         });
+                //       }
+                //     },
+                //     {
+                //       'label': 'Food',
+                //       'icon': const {
+                //         'iconData': Icons.fastfood_outlined,
+                //         'color': Colors.green,
+                //         'containerIcon': false,
+                //       },
+                //       'onTap': () {
+                //         setState(() {
+                //           categoryIndex = 1;
+                //         });
+                //       }
+                //     },
+                //     {
+                //       'label': 'Transport',
+                //       'icon': const {
+                //         'iconData': Icons.car_repair_outlined,
+                //         'color': Colors.green,
+                //         'containerIcon': false,
+                //       },
+                //       'onTap': () {
+                //         setState(() {
+                //           categoryIndex = 2;
+                //         });
+                //       }
+                //     },
+                //   ],
+                // ),
                 CustomTextField(
                   topPadding: 0,
                   label: "Amount",
@@ -149,9 +203,13 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                   children: [
                     Expanded(
                       child: CustomTextField(
+                        onTap: () async {
+                          await pickDateTime();
+                        },
                         label: "Date",
-                        controller: _amountController,
-                        hintText: "16 - 04 - 2023",
+                        readOnly: true,
+                        controller: null,
+                        hintText: "${date.day} - ${date.month} - ${date.year}",
                         obscureText: false,
                         textInputType: TextInputType.number,
                         suffixWidget: null,
@@ -165,9 +223,13 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                     SizedBox(width: size.width * 0.1),
                     Expanded(
                       child: CustomTextField(
+                        onTap: () async {
+                          await pickDateTime();
+                        },
+                        readOnly: true,
                         label: "Time",
-                        controller: _amountController,
-                        hintText: "12:24 AM",
+                        controller: null,
+                        hintText: "${date.hour} : ${date.minute}",
                         obscureText: false,
                         textInputType: TextInputType.number,
                         suffixWidget: null,

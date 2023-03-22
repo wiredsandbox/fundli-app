@@ -92,4 +92,33 @@ class AuthService {
       return null;
     }
   }
+
+  Future<UserAuthModel?> fetchUserAccount({required String token}) async {
+    String endpoint = "account/me/";
+
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl$endpoint'),
+        headers: {"Authorization": "Bearer $token"},
+      );
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final data = jsonDecode(response.body);
+
+        return UserAuthModel(
+            id: data['id'],
+            email: data['email'],
+            lastName: data['lastName'],
+            firstName: data['firstName'],
+            token: token);
+      } else {
+        debugPrint("Error fetchUserAccount service: ${response.statusCode}");
+        debugPrint("Error Body: ${response.body}");
+        return null;
+      }
+    } catch (e) {
+      debugPrint("Error fetchUserAccount service: $e");
+      return null;
+    }
+  }
 }

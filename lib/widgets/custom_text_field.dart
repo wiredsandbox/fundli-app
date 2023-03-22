@@ -4,12 +4,14 @@ import 'package:flutter/services.dart';
 import '../utilities/constants.dart';
 
 class CustomTextField extends StatefulWidget {
+  final bool? readOnly;
+  final VoidCallback? onTap;
   final String hintText;
   final String label;
   final Color? color;
   final int? maxLines;
   final TextStyle? labelTextStyle;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool obscureText;
   final TextInputType textInputType;
   final Widget? suffixWidget;
@@ -17,6 +19,8 @@ class CustomTextField extends StatefulWidget {
   final double? topPadding;
   const CustomTextField({
     Key? key,
+    this.readOnly,
+    this.onTap,
     this.maxLines,
     this.inputFormatters,
     this.color,
@@ -43,48 +47,53 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
     final size = MediaQuery.of(context).size;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: widget.topPadding ?? size.height * 0.019),
-        Text(
-          widget.label,
-          style: widget.labelTextStyle ??
-              TextStyle(
-                fontSize: 18,
-                color: kPrimary.withOpacity(1),
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        const SizedBox(height: 10),
-        TextField(
-          maxLines: widget.maxLines ?? 1,
-          inputFormatters: widget.inputFormatters,
-          controller: widget.controller,
-          keyboardType: widget.textInputType,
-          obscureText: widget.obscureText,
-          style: TextStyle(color: kPrimary.withOpacity(0.8)),
-          decoration: InputDecoration(
-            hintText: widget.hintText,
-            hintStyle: TextStyle(color: kPrimary.withOpacity(0.7)),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(
-                width: 1.2,
-                color: kPrimary.withOpacity(0.4),
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(
-                width: 1.2,
-                color: kPrimary.withOpacity(0.4),
-              ),
-            ),
-            suffix: widget.suffixWidget,
+    return InkWell(
+      onTap: widget.onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: widget.topPadding ?? size.height * 0.019),
+          Text(
+            widget.label,
+            style: widget.labelTextStyle ??
+                TextStyle(
+                  fontSize: 18,
+                  color: kPrimary.withOpacity(1),
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-        ),
-      ],
+          const SizedBox(height: 10),
+          TextField(
+            readOnly: widget.readOnly != null ? widget.readOnly! : false,
+            onTap: widget.onTap,
+            maxLines: widget.maxLines ?? 1,
+            inputFormatters: widget.inputFormatters,
+            controller: widget.controller,
+            keyboardType: widget.textInputType,
+            obscureText: widget.obscureText,
+            style: TextStyle(color: kPrimary.withOpacity(0.8)),
+            decoration: InputDecoration(
+              hintText: widget.hintText,
+              hintStyle: TextStyle(color: kPrimary.withOpacity(0.7)),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(
+                  width: 1.2,
+                  color: kPrimary.withOpacity(0.4),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(
+                  width: 1.2,
+                  color: kPrimary.withOpacity(0.4),
+                ),
+              ),
+              suffix: widget.suffixWidget,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
