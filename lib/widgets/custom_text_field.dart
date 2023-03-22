@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../utilities/constants.dart';
+
 class CustomTextField extends StatefulWidget {
   final String hintText;
   final String label;
@@ -29,21 +31,21 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
-    Color kPrimary = widget.color == null
-        ? Colors.black.withOpacity(0.8)
-        : widget.color!.withOpacity(0.8);
+    // Color kPrimary = widget.color == null
+    //     ? Colors.black.withOpacity(0.8)
+    //     : widget.color!.withOpacity(0.8);
 
     final size = MediaQuery.of(context).size;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: size.height * 0.03),
+        SizedBox(height: size.height * 0.019),
         Text(
           widget.label,
           style: TextStyle(
             fontSize: 18,
-            color: kPrimary,
+            color: kPrimary.withOpacity(1),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -58,17 +60,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
             hintText: widget.hintText,
             hintStyle: TextStyle(color: kPrimary.withOpacity(0.7)),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(
                 width: 1.2,
-                color: kPrimary,
+                color: kPrimary.withOpacity(0.4),
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(
                 width: 1.2,
-                color: kPrimary,
+                color: kPrimary.withOpacity(0.4),
               ),
             ),
             suffix: widget.suffixWidget,

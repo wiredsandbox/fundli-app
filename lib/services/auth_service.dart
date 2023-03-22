@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:pocket_guard/utilities/constants.dart';
 
@@ -24,10 +23,6 @@ class AuthService {
         "last_name": lastName,
       });
 
-      print(body);
-
-      Clipboard.setData(ClipboardData(text: body));
-
       final response = await http.post(
         Uri.parse("$baseUrl$endpoint"),
         headers: {"Content-Type": "application/json"},
@@ -37,13 +32,11 @@ class AuthService {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
 
-        print(data);
-
         UserAuthModel userAuthModel = UserAuthModel(
           id: data['id'],
           email: data['email'],
-          lastName: data['last_name'],
-          firstName: data['first_name'],
+          lastName: data['lastName'],
+          firstName: data['firstName'],
           token: data['token'],
         );
 
@@ -83,14 +76,14 @@ class AuthService {
         UserAuthModel userAuthModel = UserAuthModel(
           id: data['id'],
           email: data['email'],
-          lastName: data['last_name'],
-          firstName: data['first_name'],
+          lastName: data['lastName'],
+          firstName: data['firstName'],
           token: data['token'],
         );
 
         return userAuthModel;
       } else {
-        debugPrint("Error code: ${response.statusCode}");
+        debugPrint("!------------Error code: ${response.statusCode}");
         debugPrint(response.body);
         return null;
       }

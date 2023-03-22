@@ -37,20 +37,11 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    //navigate();
-
     return Scaffold(
       backgroundColor: kPrimary,
       body: FutureBuilder(
           future: navigate(),
           builder: (context, snapshot) {
-            // if (snapshot.hasError) {
-            //   debugPrint(snapshot.error.toString());
-            //   return homePage(size);
-            // } else if (snapshot.connectionState == ConnectionState.waiting) {
-            //   return homePage(size);
-            // }
-
             return Center(
               child: Image.asset(
                 'assets/images/splash_logo.png',

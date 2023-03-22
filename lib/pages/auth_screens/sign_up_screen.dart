@@ -46,7 +46,26 @@ class _SignUpState extends State<SignUp> {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Text(
+                      "Create account",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: kPrimary,
+                      ),
+                    ),
+                    const Text(
+                      '\nLet\'s get you started',
+                      style: TextStyle(
+                        color: kPrimary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.03),
                     CustomTextField(
                       label: 'First name',
                       controller: _firstNameController,
@@ -99,40 +118,46 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
             ),
-            CustomButton(
-              padding: EdgeInsets.symmetric(
-                vertical: 20,
-                horizontal: size.width * 0.3,
-              ),
-              borderColor: Colors.black,
-              color: Colors.black,
-              borderRadius: 20,
-              onTap: () async {
-                if (_emailController.text.isNotEmpty &&
-                    _passwordController.text.isNotEmpty &&
-                    _firstNameController.text.isNotEmpty &&
-                    _lastNameController.text.isNotEmpty) {
-                  await context.read<UserAuthProvider>().signUpUser(
-                        context: context,
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                        firstName: _firstNameController.text,
-                        lastName: _lastNameController.text,
-                      );
-                } else {
-                  showSnackBar(
-                    context: context,
-                    text: "Please make sure all forms are filled",
-                  );
-                }
-              },
-              child: const Text(
-                "Sign up",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
+            Row(
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    padding: EdgeInsets.symmetric(
+                      vertical: size.height * 0.02,
+                      //horizontal: size.width * 0.3,
+                    ),
+                    borderColor: kPrimary,
+                    color: kPrimary,
+                    borderRadius: 7,
+                    onTap: () async {
+                      if (_emailController.text.isNotEmpty &&
+                          _passwordController.text.isNotEmpty &&
+                          _firstNameController.text.isNotEmpty &&
+                          _lastNameController.text.isNotEmpty) {
+                        await context.read<UserAuthProvider>().signUpUser(
+                              context: context,
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                              firstName: _firstNameController.text,
+                              lastName: _lastNameController.text,
+                            );
+                      } else {
+                        showSnackBar(
+                          context: context,
+                          text: "Please make sure all forms are filled",
+                        );
+                      }
+                    },
+                    child: const Text(
+                      "Create an account",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -153,8 +178,8 @@ class _SignUpState extends State<SignUp> {
                   child: const Text(
                     "Log in",
                     style: TextStyle(
-                      decoration: TextDecoration.underline,
-                    ),
+                        //decoration: TextDecoration.underline,
+                        color: kPrimary),
                   ),
                 ),
               ],

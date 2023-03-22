@@ -26,9 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Log in",
+          "Sign in",
           style: TextStyle(
-            color: Colors.black,
+            color: kPrimary,
             fontSize: 25,
             fontWeight: FontWeight.w600,
           ),
@@ -43,8 +43,28 @@ class _LoginScreenState extends State<LoginScreen> {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Text(
+                      "Hi! Welcome Back 👋",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: kPrimary,
+                      ),
+                    ),
+                    const Text(
+                      '\nPlease login to your account',
+                      style: TextStyle(
+                        color: kPrimary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.04),
                     CustomTextField(
+                      color: kPrimary.withOpacity(0.5),
                       label: 'Email',
                       controller: _emailController,
                       hintText: "Enter your email",
@@ -76,52 +96,43 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            CustomButton(
-              padding: EdgeInsets.symmetric(
-                vertical: 20,
-                horizontal: size.width * 0.3,
-              ),
-              borderColor: Colors.black,
-              color: Colors.black,
-              borderRadius: 20,
-              onTap: () async {
-                if (_emailController.text.isNotEmpty &&
-                    _passwordController.text.isNotEmpty) {
-                  await context.read<UserAuthProvider>().loginUser(
-                        context: context,
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                      );
-                } else {
-                  showSnackBar(
-                    context: context,
-                    text: "Please make sure all forms are filled",
-                  );
-                }
-              },
-              child: const Text(
-                "Log in",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
+            Row(
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    padding: EdgeInsets.symmetric(
+                      vertical: size.height * 0.02,
+                      //horizontal: size.width * 0.3,
+                    ),
+                    borderColor: kPrimary,
+                    color: kPrimary,
+                    borderRadius: 7,
+                    onTap: () async {
+                      if (_emailController.text.isNotEmpty &&
+                          _passwordController.text.isNotEmpty) {
+                        await context.read<UserAuthProvider>().loginUser(
+                              context: context,
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
+                      } else {
+                        showSnackBar(
+                          context: context,
+                          text: "Please make sure all forms are filled",
+                        );
+                      }
+                    },
+                    child: const Text(
+                      "Sign in",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-            // TextButton(
-            //   onPressed: () {
-            //     PageNavigation().pushPage(
-            //       context: context,
-            //       page: const ForgotPassword(),
-            //     );
-            //   },
-            //   child: const Text(
-            //     "Forgot password",
-            //     style: TextStyle(
-            //       fontSize: 16,
-            //       fontWeight: FontWeight.bold,
-            //     ),
-            //   ),
-            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -141,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const Text(
                     "Sign up",
                     style: TextStyle(
-                      decoration: TextDecoration.underline,
+                      color: kPrimary,
                     ),
                   ),
                 ),
