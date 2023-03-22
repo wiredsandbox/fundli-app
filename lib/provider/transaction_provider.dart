@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_guard/services/transaction_service.dart';
+import 'package:pocket_guard/utilities/page_navigation.dart';
+import 'package:pocket_guard/utilities/show_snack_bar.dart';
 
 import '../models/transaction_model.dart';
 
@@ -44,6 +46,7 @@ class TransactionProvider with ChangeNotifier {
   }
 
   Future createTransaction({
+    required context,
     required String token,
     required String name,
     required double amount,
@@ -51,13 +54,17 @@ class TransactionProvider with ChangeNotifier {
     required String kind,
   }) async {
     TransactionModel? transactionModel =
-        await _transactionService.createTransaction(
+        await _transactionService.createNewTransaction(
             token: token, name: name, amount: amount, time: time, kind: kind);
 
     if (transactionModel != null) {
       _transactionList.add(transactionModel);
-    }
 
-    notifyListeners();
+      PageNavigation().popPagesMultipleTimes(context: context, times: 1);
+
+      notifyListeners();
+    } else {
+      showSnackBar(context: context, text: "We couldn't process that");
+    }
   }
 }

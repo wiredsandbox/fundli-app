@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:timeago/timeago.dart' as ago;
 
 import '../models/transaction_model.dart';
 import 'expense_tile.dart';
@@ -17,15 +16,13 @@ class _TransactionListState extends State<TransactionList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      reverse: true,
       itemCount: widget.transactionList.length,
       itemBuilder: (context, index) {
         final transaction = widget.transactionList[index];
 
         return ExpenseTile(
-          title: transaction.name,
-          time: ago.format(transaction.createdAt),
-          amount: transaction.amount,
-          type: transaction.kind,
+          transactionModel: transaction,
         );
       },
     );
