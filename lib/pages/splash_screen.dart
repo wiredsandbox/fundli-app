@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pocket_guard/pages/home_page.dart';
+import 'package:pocket_guard/services/storage_service.dart';
 import 'package:pocket_guard/utilities/page_navigation.dart';
 
 import '../utilities/constants.dart';
@@ -14,23 +16,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late Timer timer;
   navigate() async {
-    const Duration duration = Duration(seconds: 2);
-    Future.delayed(duration, () {
-      timer = Timer(duration, () {
-        PageNavigation().replacePage(
-          context: context,
-          page: const AuthHome(),
-        );
-      });
-    });
-  }
+    String? token = await StorageService().getToken;
 
-  @override
-  void dispose() {
-    super.dispose();
-    timer.cancel();
+    const Duration duration = Duration(seconds: 4);
+    await Future.delayed(duration, () {
+      PageNavigation().replacePage(
+        context: context,
+        page: token != null ? const HomePage() : const AuthHome(),
+      );
+    });
   }
 
   @override
