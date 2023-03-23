@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pocket_guard">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
    <application
         android:label="pocket_guard"
         android:name="${applicationName}"
