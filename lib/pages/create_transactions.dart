@@ -116,7 +116,7 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                       'label': 'Income',
                       'icon': const {
                         'iconData': Icons.arrow_upward_outlined,
-                        'color': Colors.green,
+                        'color': Color(0xff53D258),
                         'containerIcon': true,
                       },
                       'onTap': () {
@@ -129,7 +129,7 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                       'label': 'Expense',
                       'icon': const {
                         'iconData': Icons.arrow_downward_outlined,
-                        'color': Colors.red,
+                        'color': Color(0xffE25C5C),
                         'containerIcon': true,
                       },
                       'onTap': () {
@@ -140,51 +140,20 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                     }
                   ],
                 ),
-                // AddTransactionCategory(
-                //   categoryName: "Category",
-                //   currentSelected: categoryIndex,
-                //   buttonDetails: [
-                //     {
-                //       'label': 'Shopping',
-                //       'icon': const {
-                //         'iconData': Icons.shopping_bag_outlined,
-                //         'color': Colors.green,
-                //         'containerIcon': false,
-                //       },
-                //       'onTap': () {
-                //         setState(() {
-                //           categoryIndex = 0;
-                //         });
-                //       }
-                //     },
-                //     {
-                //       'label': 'Food',
-                //       'icon': const {
-                //         'iconData': Icons.fastfood_outlined,
-                //         'color': Colors.green,
-                //         'containerIcon': false,
-                //       },
-                //       'onTap': () {
-                //         setState(() {
-                //           categoryIndex = 1;
-                //         });
-                //       }
-                //     },
-                //     {
-                //       'label': 'Transport',
-                //       'icon': const {
-                //         'iconData': Icons.car_repair_outlined,
-                //         'color': Colors.green,
-                //         'containerIcon': false,
-                //       },
-                //       'onTap': () {
-                //         setState(() {
-                //           categoryIndex = 2;
-                //         });
-                //       }
-                //     },
-                //   ],
-                // ),
+                CustomTextField(
+                  label: "Name",
+                  controller: _descriptionController,
+                  hintText: "More details",
+                  obscureText: false,
+                  textInputType: TextInputType.text,
+                  suffixWidget: null,
+                  labelTextStyle: const TextStyle(
+                    color: kPrimary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 16),
                 CustomTextField(
                   topPadding: 0,
                   label: "Amount",
@@ -241,20 +210,6 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                       ),
                     ),
                   ],
-                ),
-                CustomTextField(
-                  maxLines: 4,
-                  label: "Description",
-                  controller: _descriptionController,
-                  hintText: "More details",
-                  obscureText: false,
-                  textInputType: TextInputType.text,
-                  suffixWidget: null,
-                  labelTextStyle: const TextStyle(
-                    color: kPrimary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
                 ),
               ],
             ),
