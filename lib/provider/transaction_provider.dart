@@ -11,13 +11,13 @@ class TransactionProvider with ChangeNotifier {
   final TransactionService _transactionService = TransactionService();
   List<TransactionModel> get getTransactionList => _transactionList;
 
-  double getTotal(bool income) {
+  double getTotal() {
     double total = 0;
 
     for (var transaction in _transactionList) {
-      if (transaction.kind == (income ? "INCOME" : "EXPENSE")) {
-        total += transaction.amount;
-      }
+      transaction.kind == "INCOME"
+          ? total += transaction.amount
+          : total -= transaction.amount;
     }
 
     return total;

@@ -20,14 +20,10 @@ class _TransactionListState extends State<TransactionList> {
       itemCount: widget.transactionList.length,
       itemBuilder: (context, index) {
         final transaction = widget.transactionList[index];
-
         return ExpenseTile(
           transactionModel: transaction,
         );
       },
-      // separatorBuilder: (context, index) {
-      //   return Divider();
-      // },
     );
   }
 }

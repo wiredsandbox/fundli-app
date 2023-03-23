@@ -116,9 +116,35 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AccountCard(
-                incoming: context.watch<TransactionProvider>().getTotal(true),
-                outgoing: context.watch<TransactionProvider>().getTotal(false)),
-            const SizedBox(height: 25),
+              balance: context.watch<TransactionProvider>().getTotal(),
+              account: "DEFAULT",
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Transactions',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'See all',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
             Expanded(
               child: TransactionList(
                 transactionList:

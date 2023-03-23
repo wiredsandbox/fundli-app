@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pocket_guard/models/transaction_model.dart';
+import 'package:pocket_guard/utilities/main_utilities.dart';
 
 class ExpenseTile extends StatefulWidget {
   final TransactionModel transactionModel;
@@ -54,7 +55,7 @@ class _ExpenseTileState extends State<ExpenseTile> {
                 children: [
                   Text(
                     "${widget.transactionModel.kind == "INCOME" ? "+" : "-"}"
-                    " ₦${widget.transactionModel.amount}",
+                    " ₦${MainUtilities().formatAmount(widget.transactionModel.amount)}",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: widget.transactionModel.kind == "INCOME"
