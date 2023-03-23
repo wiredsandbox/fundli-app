@@ -25,6 +25,9 @@ class _TransactionListState extends State<TransactionList> {
           transactionModel: transaction,
         );
       },
+      // separatorBuilder: (context, index) {
+      //   return Divider();
+      // },
     );
   }
 }

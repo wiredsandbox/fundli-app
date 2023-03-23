@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pocket_guard/models/transaction_model.dart';
-import 'package:timeago/timeago.dart' as ago;
 
 class ExpenseTile extends StatefulWidget {
   final TransactionModel transactionModel;
@@ -17,79 +17,65 @@ class _ExpenseTileState extends State<ExpenseTile> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        height: size.height * 0.08,
-        width: double.infinity,
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          children: [
-            Container(
-              height: size.height * 0.65,
-              width: size.height * 0.065,
-              decoration: BoxDecoration(
-                color: const Color(0xffFFECEC),
-                borderRadius: BorderRadius.circular(15),
+    final date = widget.transactionModel.createdAt;
+    return Column(
+      children: [
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: 0),
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: CircleAvatar(
+                radius: size.width * 0.07,
+                backgroundColor: const Color(0xff89A1F7),
+                child: const Icon(
+                  Icons.apple_outlined,
+                  size: 35,
+                  color: Colors.black,
+                ),
               ),
-              child: Icon(
-                Icons.attach_money,
-                color: widget.transactionModel.kind == "INCOME"
-                    ? Colors.green
-                    : Colors.red,
-                size: 27,
+              title: Text(
+                widget.transactionModel.name,
+                style: const TextStyle(
+                  //fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            const SizedBox(width: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  widget.transactionModel.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+              subtitle: Text(
+                //ago.format(widget.transactionModel.createdAt),
+                DateFormat("h:mma").format(date),
+                style: const TextStyle(
+                  color: Color(0xff81878C),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              trailing: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "${widget.transactionModel.kind == "INCOME" ? "+" : "-"}"
+                    " ₦${widget.transactionModel.amount}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: widget.transactionModel.kind == "INCOME"
+                          ? const Color(0xff53D258)
+                          : const Color(0xffE25C5C),
+                    ),
                   ),
-                ),
-                Text(
-                  ago.format(widget.transactionModel.createdAt),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
-                      color: Color(0xff979797)),
-                ),
-              ],
-            ),
-            const Expanded(child: SizedBox()),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "${widget.transactionModel.kind == "INCOME" ? "" : "-"}₦${widget.transactionModel.amount}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                Text(
-                  widget.transactionModel.kind,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
-                      color: Color(0xff979797)),
-                ),
-              ],
-            ),
-            const SizedBox(width: 8),
-          ],
-        ),
-      ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "${date.day}-${date.month}-${date.year}",
+                    style: const TextStyle(
+                      color: Color(0xff81878C),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )
+                ],
+              ),
+            )),
+        const Divider(),
+      ],
     );
   }
 }
