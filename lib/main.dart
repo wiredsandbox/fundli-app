@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pocket_guard/pages/splash_screen.dart';
 import 'package:pocket_guard/provider/transaction_provider.dart';
 import 'package:pocket_guard/utilities/constants.dart';
@@ -6,7 +7,15 @@ import 'package:provider/provider.dart';
 
 import 'provider/user_auth_provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  ///init hive
+  await Hive.initFlutter();
+
+  ///open box
+  await Hive.openBox("storage");
+
   runApp(
     MultiProvider(
       providers: [

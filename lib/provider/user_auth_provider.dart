@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_guard/pages/home_page.dart';
 import 'package:pocket_guard/services/auth_service.dart';
+import 'package:pocket_guard/services/storage_service.dart';
 import 'package:pocket_guard/utilities/show_snack_bar.dart';
 
 import '../models/user_auth_model.dart';
@@ -10,6 +11,7 @@ late UserAuthModel _userAuthModel;
 
 class UserAuthProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
+  final StorageService _storageService = StorageService();
 
   UserAuthModel get getUserAuthModel => _userAuthModel;
 
@@ -28,6 +30,9 @@ class UserAuthProvider with ChangeNotifier {
 
     if (userAuthModel != null) {
       _userAuthModel = userAuthModel;
+
+      await _storageService.storeUserToken(token: userAuthModel.token);
+
       notifyListeners();
 
       PageNavigation().replacePage(
@@ -49,6 +54,9 @@ class UserAuthProvider with ChangeNotifier {
 
     if (userAuthModel != null) {
       _userAuthModel = userAuthModel;
+
+      await _storageService.storeUserToken(token: userAuthModel.token);
+
       notifyListeners();
 
       PageNavigation().replacePage(
@@ -62,12 +70,16 @@ class UserAuthProvider with ChangeNotifier {
 
   Future fetchUserAccount() async {
     try {
-      UserAuthModel? fetchedData =
-          await _authService.fetchUserAccount(token: _userAuthModel.token);
+      String? userToken = await _storageService.getToken;
 
-      if (fetchedData != null) {
-        _userAuthModel = fetchedData;
-        notifyListeners();
+      if (userToken != null) {
+        UserAuthModel? fetchedData =
+            await _authService.fetchUserAccount(token: userToken);
+
+        if (fetchedData != null) {
+          _userAuthModel = fetchedData;
+          notifyListeners();
+        }
       }
     } catch (e) {
       debugPrint("Error fetching user data: $e");
