@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pocket_guard/pages/home_page.dart';
+import 'package:pocket_guard/services/jwt_service.dart';
 import 'package:pocket_guard/services/storage_service.dart';
 import 'package:pocket_guard/utilities/page_navigation.dart';
 
@@ -16,16 +17,28 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final PageNavigation _navigation = PageNavigation();
+
   navigate() async {
+    const Duration duration = Duration(seconds: 4);
     String? token = await StorageService().getToken;
 
-    const Duration duration = Duration(seconds: 4);
-    await Future.delayed(duration, () {
-      PageNavigation().replacePage(
-        context: context,
-        page: token != null ? const HomePage() : const AuthHome(),
-      );
-    });
+    if (token != null) {
+      bool tokenExpired = JWTService().getTokenExpired(token);
+      await Future.delayed(duration, () {
+        PageNavigation().replacePage(
+          context: context,
+          page: tokenExpired ? const AuthHome() : const HomePage(),
+        );
+      });
+    } else {
+      await Future.delayed(duration, () {
+        _navigation.replacePage(
+          context: context,
+          page: const AuthHome(),
+        );
+      });
+    }
   }
 
   @override
