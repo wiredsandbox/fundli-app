@@ -102,7 +102,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: CustomButton(
                     padding: EdgeInsets.symmetric(
                       vertical: size.height * 0.02,
-                      //horizontal: size.width * 0.3,
                     ),
                     borderColor: kPrimary,
                     color: kPrimary,

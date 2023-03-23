@@ -1,12 +1,15 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:pocket_guard/utilities/main_utilities.dart';
 
 class AccountCard extends StatefulWidget {
-  final double incoming;
-  final double outgoing;
+  final String account;
+  final double balance;
   const AccountCard({
     Key? key,
-    required this.incoming,
-    required this.outgoing,
+    required this.account,
+    required this.balance,
   }) : super(key: key);
 
   @override
@@ -14,12 +17,13 @@ class AccountCard extends StatefulWidget {
 }
 
 class _AccountCardState extends State<AccountCard> {
+  bool view = true;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
-      height: size.height * 0.197,
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -28,56 +32,79 @@ class _AccountCardState extends State<AccountCard> {
           image: AssetImage("assets/images/card.png"),
         ),
       ),
-      child: Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    Icons.arrow_circle_up,
-                    size: size.width * 0.07,
-                    color: Colors.green,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    "₦${widget.incoming}",
+                  const Text(
+                    "Total balance",
                     style: TextStyle(
-                      fontSize: size.width * 0.046,
+                      fontSize: 15,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          view = !view;
+                        });
+                      },
+                      icon: Icon(
+                        view
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                        color: Colors.grey,
+                      ))
+                ],
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: ImageFiltered(
+                  imageFilter: view
+                      ? ImageFilter.blur(sigmaX: 0, sigmaY: 0)
+                      : ImageFilter.blur(sigmaX: 15, sigmaY: 1),
+                  child: Text(
+                    "₦${MainUtilities().formatAmount(widget.balance)}",
+                    style: const TextStyle(
+                      fontSize: 35,
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.arrow_circle_down,
-                    size: size.width * 0.07,
-                    color: Colors.red,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    "₦${widget.outgoing}",
-                    style: TextStyle(
-                      fontSize: size.width * 0.046,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
+          SizedBox(height: size.height * 0.02),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Account",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
               ),
-            ),
-          ),
+              Text(
+                widget.account,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
