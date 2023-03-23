@@ -16,7 +16,7 @@ class _TransactionListState extends State<TransactionList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      reverse: true,
+      reverse: false,
       itemCount: widget.transactionList.length,
       itemBuilder: (context, index) {
         final transaction = widget.transactionList[index];
