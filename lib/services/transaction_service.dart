@@ -37,6 +37,8 @@ class TransactionService {
         }).toList();
 
         return transactionList;
+      } else if (response.statusCode == 404) {
+        return [];
       } else {
         debugPrint("Error code: ${response.statusCode}");
         debugPrint(response.body);
