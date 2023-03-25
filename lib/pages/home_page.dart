@@ -86,13 +86,16 @@ class _HomePageState extends State<HomePage> {
                       Container(
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.grey,
+                          color: kBalanceText,
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(size.height * 0.015),
+                          padding: EdgeInsets.all(15),
                           child: Text(
                             "${userAuthModel.firstName[0]}${userAuthModel.lastName[0]}",
-                            style: const TextStyle(color: kPrimary),
+                            style: const TextStyle(
+                                color: kPrimary,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700),
                           ),
                         ),
                       ),

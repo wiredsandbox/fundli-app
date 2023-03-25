@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:pocket_guard/utilities/constants.dart';
 import 'package:pocket_guard/utilities/main_utilities.dart';
 
 class AccountCard extends StatefulWidget {
@@ -21,7 +22,7 @@ class _AccountCardState extends State<AccountCard> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(25),
@@ -51,13 +52,13 @@ class _AccountCardState extends State<AccountCard> {
                       color: Colors.grey,
                     ),
                   ),
-                  IconButton(
-                      onPressed: () {
+                  InkWell(
+                      onTap: () {
                         setState(() {
                           view = !view;
                         });
                       },
-                      icon: Icon(
+                      child: Icon(
                         view
                             ? Icons.visibility_outlined
                             : Icons.visibility_off_outlined,
@@ -76,14 +77,14 @@ class _AccountCardState extends State<AccountCard> {
                     style: const TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white,
+                      color: kBalanceText,
                     ),
                   ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: size.height * 0.02),
+          const SizedBox(height: 25),
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
