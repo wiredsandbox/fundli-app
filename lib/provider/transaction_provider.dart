@@ -27,10 +27,15 @@ class TransactionProvider with ChangeNotifier {
     required String token,
     required int page,
   }) async {
-    List<TransactionModel>? transactionList = await _transactionService
+    List<TransactionModel>? fetchedTransactionList = await _transactionService
         .fetchTransactionList(token: token, page: page);
 
-    if (transactionList != null) {
+    if (fetchedTransactionList != null) {
+      fetchedTransactionList.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+
+      List<TransactionModel> transactionList =
+          fetchedTransactionList.reversed.toList();
+
       for (var transaction in transactionList) {
         if (_transactionList.contains(transaction)) {
           int index = _transactionList.indexOf(transaction);
@@ -58,7 +63,7 @@ class TransactionProvider with ChangeNotifier {
             token: token, name: name, amount: amount, time: time, kind: kind);
 
     if (transactionModel != null) {
-      _transactionList.add(transactionModel);
+      _transactionList.insert(0, transactionModel);
 
       PageNavigation().popPagesMultipleTimes(context: context, times: 1);
 
