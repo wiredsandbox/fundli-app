@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                           color: kBalanceText,
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(15),
+                          padding: const EdgeInsets.all(15),
                           child: Text(
                             "${userAuthModel.firstName[0]}${userAuthModel.lastName[0]}",
                             style: const TextStyle(

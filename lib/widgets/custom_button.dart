@@ -33,7 +33,7 @@ class CustomButton extends StatelessWidget {
           ),
         ),
       ),
-      child: Expanded(child: child),
+      child: child,
     );
   }
 }

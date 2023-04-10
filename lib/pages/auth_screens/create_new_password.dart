@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:pocket_guard/utilities/page_navigation.dart';
-import 'package:pocket_guard/widgets/circular_button.dart';
-import 'package:provider/provider.dart';
 
-import '../../provider/user_auth_provider.dart';
 import '../../utilities/constants.dart';
-import '../../utilities/show_snack_bar.dart';
+import '../../utilities/page_navigation.dart';
+import '../../widgets/circular_button.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
-import 'forgot_password_verify_email.dart';
 
-class ForgotPassword extends StatefulWidget {
-  const ForgotPassword({Key? key}) : super(key: key);
+class CreateNewPassword extends StatefulWidget {
+  const CreateNewPassword({Key? key}) : super(key: key);
 
   @override
-  State<ForgotPassword> createState() => _ForgotPasswordState();
+  State<CreateNewPassword> createState() => _CreateNewPasswordState();
 }
 
-class _ForgotPasswordState extends State<ForgotPassword> {
-  final TextEditingController _emailController = TextEditingController();
+class _CreateNewPasswordState extends State<CreateNewPassword> {
+  bool showPassword = false;
+  bool showNewPassword = false;
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -54,7 +55,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               Expanded(
                 child: ListView(
                   children: [
-                    SizedBox(height: size.height * 0.06),
+                    SizedBox(height: size.height * 0.055),
                     SizedBox(
                       height: size.height * 0.123,
                       width: size.width * 0.24,
@@ -62,9 +63,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         "assets/images/forgot-password-lock.png",
                       ),
                     ),
-                    SizedBox(height: size.height * 0.089),
+                    SizedBox(height: size.height * 0.085),
                     const Text(
-                      "Forgot password?",
+                      "New password",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 20,
@@ -74,8 +75,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      "Please enter your email  to receive a"
-                      " verification code to set a new password ",
+                      "Your New Password Must be Different "
+                      "From Previously Used Password",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 14,
@@ -85,45 +86,75 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                     SizedBox(height: size.height * 0.05),
                     CustomTextField(
-                      label: 'Email',
-                      controller: _emailController,
-                      hintText: "Enter your email",
+                      label: 'New password',
+                      controller: _newPasswordController,
+                      hintText: "xxxxxxx",
                       obscureText: false,
                       textInputType: TextInputType.text,
-                      suffixWidget: null,
+                      suffixWidget: InkWell(
+                        onTap: () {
+                          setState(() {
+                            showPassword = !showPassword;
+                          });
+                        },
+                        child: Icon(
+                          showPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 16),
+                    CustomTextField(
+                      label: 'Confirm password',
+                      controller: _confirmPasswordController,
+                      hintText: "xxxxxxx",
+                      obscureText: false,
+                      textInputType: TextInputType.text,
+                      suffixWidget: InkWell(
+                        onTap: () {
+                          setState(() {
+                            showNewPassword = !showNewPassword;
+                          });
+                        },
+                        child: Icon(
+                          showNewPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
                     Center(
                       child: CustomButton(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         borderColor: kPrimary,
                         color: kPrimary,
                         borderRadius: 8,
                         onTap: () async {
-                          if (_emailController.text.isNotEmpty) {
-                            bool success = await context
-                                .read<UserAuthProvider>()
-                                .forgotPasswordLink(
-                                    email: _emailController.text);
-
-                            await Future.delayed(
-                                const Duration(milliseconds: 100), () {
-                              if (success) {
-                                PageNavigation().pushPage(
-                                  context: context,
-                                  page: ForgotPasswordVerifyEmail(
-                                      email: _emailController.text),
-                                );
-                              } else {
-                                showSnackBar(
-                                    context: context,
-                                    text: "We couldn't process that");
-                              }
-                            });
-                          } else {
-                            showSnackBar(
-                                context: context, text: "Enter your email");
-                          }
+                          // if (_emailController.text.isNotEmpty) {
+                          //   bool success = await context
+                          //       .read<UserAuthProvider>()
+                          //       .forgotPasswordLink(
+                          //           email: _emailController.text);
+                          //
+                          //   await Future.delayed(
+                          //       const Duration(milliseconds: 100), () {
+                          //     if (success) {
+                          //       PageNavigation().pushPage(
+                          //           context: context,
+                          //           page: const ForgotPasswordOTP());
+                          //     } else {
+                          //       showSnackBar(
+                          //           context: context,
+                          //           text: "We couldn't process that");
+                          //     }
+                          //   });
+                          // } else {
+                          //   showSnackBar(
+                          //       context: context, text: "Enter your email");
+                          // }
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
