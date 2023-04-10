@@ -40,7 +40,8 @@ class TransactionService {
       } else if (response.statusCode == 404) {
         return [];
       } else {
-        debugPrint("Error code: ${response.statusCode}");
+        debugPrint(
+            "!------------Error transaction list code: ${response.statusCode}");
         debugPrint(response.body);
         return null;
       }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pocket_guard/utilities/constants.dart';
 
 showSnackBar({
   required BuildContext context,
@@ -7,7 +8,7 @@ showSnackBar({
 }) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: color ?? Colors.black,
+      backgroundColor: color ?? kPrimary,
       content: Text(
         text,
         textAlign: TextAlign.center,

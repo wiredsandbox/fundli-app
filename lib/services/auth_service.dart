@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:pocket_guard/utilities/constants.dart';
@@ -42,7 +43,8 @@ class AuthService {
 
         return userAuthModel;
       } else {
-        debugPrint("Error code: ${response.statusCode}");
+        debugPrint(
+            "!------------Error sign up service code: ${response.statusCode}");
         debugPrint(response.body);
         return null;
       }
@@ -83,13 +85,31 @@ class AuthService {
 
         return userAuthModel;
       } else {
-        debugPrint("!------------Error code: ${response.statusCode}");
+        debugPrint(
+            "!------------Error login service code: ${response.statusCode}");
         debugPrint(response.body);
         return null;
       }
     } catch (e) {
       debugPrint("Caught error with login service: $e");
       return null;
+    }
+  }
+
+  Future<bool> sendPasswordResetLink({required String email}) async {
+    try {
+      String endpoint = "account/forgot-password";
+
+      Dio dio = Dio();
+
+      dio.options.headers.addAll({"Content-Type": "application/json"});
+
+      await dio.post("$baseUrl$endpoint", data: {"email": email});
+
+      return true;
+    } catch (e) {
+      debugPrint("Caught error with sign up service: $e");
+      return false;
     }
   }
 

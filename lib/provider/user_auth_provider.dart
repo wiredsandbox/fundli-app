@@ -68,6 +68,14 @@ class UserAuthProvider with ChangeNotifier {
     }
   }
 
+  Future forgotPasswordLink({required String email}) async {
+    final response = await _authService.sendPasswordResetLink(email: email);
+
+    return response;
+  }
+
+  Future forgotPasswordOTP({required String otp}) async {}
+
   Future fetchUserAccount() async {
     try {
       String? userToken = await _storageService.getToken;

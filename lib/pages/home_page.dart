@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late UserAuthModel userAuthModel;
-  int page = 0;
+  int page = 1;
 
   fetchData() async {
     await context.read<UserAuthProvider>().fetchUserAccount();
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    //final size = MediaQuery.of(context).size;
     return FutureBuilder(
         future: fetchData(),
         builder: (context, snapshot) {
@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                           color: kBalanceText,
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(15),
+                          padding: const EdgeInsets.all(15),
                           child: Text(
                             "${userAuthModel.firstName[0]}${userAuthModel.lastName[0]}",
                             style: const TextStyle(
