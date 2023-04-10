@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../provider/user_auth_provider.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/page_navigation.dart';
+import '../../utilities/show_snack_bar.dart';
 import '../../widgets/circular_button.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 
 class CreateNewPassword extends StatefulWidget {
-  const CreateNewPassword({Key? key}) : super(key: key);
+  final String email;
+  final String code;
+  const CreateNewPassword({
+    Key? key,
+    required this.email,
+    required this.code,
+  }) : super(key: key);
 
   @override
   State<CreateNewPassword> createState() => _CreateNewPasswordState();
@@ -89,7 +98,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       label: 'New password',
                       controller: _newPasswordController,
                       hintText: "xxxxxxx",
-                      obscureText: false,
+                      obscureText: showPassword,
                       textInputType: TextInputType.text,
                       suffixWidget: InkWell(
                         onTap: () {
@@ -109,7 +118,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       label: 'Confirm password',
                       controller: _confirmPasswordController,
                       hintText: "xxxxxxx",
-                      obscureText: false,
+                      obscureText: showNewPassword,
                       textInputType: TextInputType.text,
                       suffixWidget: InkWell(
                         onTap: () {
@@ -133,34 +142,47 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                         color: kPrimary,
                         borderRadius: 8,
                         onTap: () async {
-                          // if (_emailController.text.isNotEmpty) {
-                          //   bool success = await context
-                          //       .read<UserAuthProvider>()
-                          //       .forgotPasswordLink(
-                          //           email: _emailController.text);
-                          //
-                          //   await Future.delayed(
-                          //       const Duration(milliseconds: 100), () {
-                          //     if (success) {
-                          //       PageNavigation().pushPage(
-                          //           context: context,
-                          //           page: const ForgotPasswordOTP());
-                          //     } else {
-                          //       showSnackBar(
-                          //           context: context,
-                          //           text: "We couldn't process that");
-                          //     }
-                          //   });
-                          // } else {
-                          //   showSnackBar(
-                          //       context: context, text: "Enter your email");
-                          // }
+                          print("incursion");
+                          if (_newPasswordController.text.isNotEmpty &&
+                              _confirmPasswordController.text ==
+                                  _newPasswordController.text) {
+                            print("Making request");
+                            print(widget.code);
+
+                            bool success = await context
+                                .read<UserAuthProvider>()
+                                .createNewPassword(
+                                  email: widget.email,
+                                  code: int.parse(widget.code),
+                                  password: _confirmPasswordController.text,
+                                );
+
+                            await Future.delayed(
+                                const Duration(milliseconds: 100), () {
+                              if (success) {
+                                showSnackBar(
+                                    context: context,
+                                    text: "Successfully changed password,"
+                                        "\nlogin with your new password");
+
+                                PageNavigation().popPagesMultipleTimes(
+                                    context: context, times: 3);
+                              } else {
+                                showSnackBar(
+                                    context: context,
+                                    text: "We couldn't process that");
+                              }
+                            });
+                          } else {
+                            showSnackBar(
+                                context: context, text: "Enter your email");
+                          }
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
                             Text(
-                              "Send",
+                              "Save",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
@@ -170,26 +192,6 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                         ),
                       ),
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     Text(
-                    //       "Or",
-                    //       style: TextStyle(
-                    //         color: Colors.grey[600],
-                    //       ),
-                    //     ),
-                    //     TextButton(
-                    //       onPressed: () {},
-                    //       child: const Text(
-                    //         "Log in",
-                    //         style: TextStyle(
-                    //           decoration: TextDecoration.underline,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),

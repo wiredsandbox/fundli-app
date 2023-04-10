@@ -68,7 +68,9 @@ class UserAuthProvider with ChangeNotifier {
     }
   }
 
-  Future forgotPasswordLink({required String email}) async {
+  Future forgotPasswordLink({
+    required String email,
+  }) async {
     final response = await _authService.sendPasswordResetLink(email: email);
 
     return response;
@@ -80,6 +82,17 @@ class UserAuthProvider with ChangeNotifier {
   }) async {
     final response =
         await _authService.forgotPasswordConfirmOtp(email: email, code: code);
+
+    return response;
+  }
+
+  Future createNewPassword({
+    required String email,
+    required String password,
+    required int code,
+  }) async {
+    bool response = await _authService.createNewPassword(
+        email: email, password: password, code: code);
 
     return response;
   }

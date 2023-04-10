@@ -38,6 +38,7 @@ class _OTPTextFieldState extends State<OTPTextField> {
                 if (values.length >= index && pin.isNotEmpty) {
                   FocusScope.of(context).nextFocus();
                 }
+                widget.onChanged(values.join(""));
               },
             );
           }),

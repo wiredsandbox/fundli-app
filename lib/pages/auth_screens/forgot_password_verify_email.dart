@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pocket_guard/pages/auth_screens/create_new_password.dart';
 import 'package:pocket_guard/widgets/otp_text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +8,7 @@ import '../../utilities/page_navigation.dart';
 import '../../utilities/show_snack_bar.dart';
 import '../../widgets/circular_button.dart';
 import '../../widgets/custom_button.dart';
+import 'create_new_password.dart';
 
 class ForgotPasswordVerifyEmail extends StatefulWidget {
   final String email;
@@ -113,7 +113,10 @@ class _ForgotPasswordVerifyEmailState extends State<ForgotPasswordVerifyEmail> {
                               if (success) {
                                 PageNavigation().pushPage(
                                   context: context,
-                                  page: const CreateNewPassword(),
+                                  page: CreateNewPassword(
+                                    email: widget.email,
+                                    code: code,
+                                  ),
                                 );
                               }
                             });
