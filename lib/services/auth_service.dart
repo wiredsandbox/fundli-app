@@ -113,6 +113,62 @@ class AuthService {
     }
   }
 
+  Future<bool> forgotPasswordConfirmOtp({
+    required String email,
+    required String code,
+  }) async {
+    try {
+      String endpoint = "account/forgot-password";
+
+      Dio dio = Dio();
+
+      dio.options.headers.addAll({"Content-Type": "application/json"});
+
+      final response = await dio
+          .post("$baseUrl$endpoint", data: {"email": email, "code": code});
+
+      debugPrint(response.statusCode.toString());
+      debugPrint("Otp confirmed: ${response.data}");
+
+      return true;
+    } catch (e) {
+      debugPrint("Caught error with sign up service: $e");
+      return false;
+    }
+  }
+
+  Future createNewPassword({
+    required String email,
+    required String password,
+    required int code,
+  }) async {
+    print("///////////Creating new password");
+    print({"email": email, "password": password, "code": code});
+    try {
+      String endpoint = "account/reset-password/";
+
+      Dio dio = Dio();
+
+      dio.options.headers.addAll({"Content-Type": "application/json"});
+
+      final response = await dio.post("$baseUrl$endpoint",
+          data: {"email": email, "password": password, "code": code});
+
+      debugPrint(response.statusCode.toString());
+      debugPrint("Otp confirmed: ${response.data}");
+
+      return true;
+    } catch (e) {
+      if (e is DioError) {
+        debugPrint("Error code: ${e.response!.statusCode}");
+        debugPrint("Error message: ${e.response!.data}");
+      }
+
+      debugPrint("Caught error with sign up service: $e");
+      return false;
+    }
+  }
+
   Future<UserAuthModel?> fetchUserAccount({required String token}) async {
     String endpoint = "account/me/";
 
