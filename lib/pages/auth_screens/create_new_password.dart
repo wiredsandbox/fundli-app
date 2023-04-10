@@ -142,13 +142,9 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                         color: kPrimary,
                         borderRadius: 8,
                         onTap: () async {
-                          print("incursion");
                           if (_newPasswordController.text.isNotEmpty &&
                               _confirmPasswordController.text ==
                                   _newPasswordController.text) {
-                            print("Making request");
-                            print(widget.code);
-
                             bool success = await context
                                 .read<UserAuthProvider>()
                                 .createNewPassword(

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_guard/models/user_auth_model.dart';
+import 'package:pocket_guard/pages/transaction_calculator.dart';
 import 'package:pocket_guard/provider/user_auth_provider.dart';
 import 'package:pocket_guard/utilities/constants.dart';
 import 'package:pocket_guard/utilities/page_navigation.dart';
 import 'package:pocket_guard/utilities/show_snack_bar.dart';
 import 'package:pocket_guard/widgets/add_transaction/add_transaction_category.dart';
-import 'package:pocket_guard/widgets/custom_text_field.dart';
+import 'package:pocket_guard/widgets/regular_text_field.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/transaction_provider.dart';
@@ -140,73 +141,52 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                     }
                   ],
                 ),
-                CustomTextField(
-                  label: "Name",
+                RegularTextField(
                   controller: _descriptionController,
-                  hintText: "More details",
-                  obscureText: false,
+                  hintText: "Title",
                   textInputType: TextInputType.text,
-                  suffixWidget: null,
-                  labelTextStyle: const TextStyle(
-                    color: kPrimary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
                 ),
-                const SizedBox(height: 16),
-                CustomTextField(
-                  topPadding: 0,
-                  label: "Amount",
+                const SizedBox(height: 32),
+                RegularTextField(
                   controller: _amountController,
                   hintText: "0",
-                  obscureText: false,
                   textInputType: TextInputType.number,
-                  suffixWidget: null,
-                  labelTextStyle: const TextStyle(
-                    color: kPrimary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                  suffix: InkWell(
+                    onTap: () async {
+                      double? amount = await PageNavigation().pushPage(
+                        context: context,
+                        page: const TransactionCalculator(),
+                      );
+                    },
+                    child: const Icon(Icons.calculate_outlined),
                   ),
                 ),
+                const SizedBox(height: 32),
                 Row(
                   children: [
                     Expanded(
-                      child: CustomTextField(
+                      child: RegularTextField(
                         onTap: () async {
                           await pickDateTime();
                         },
-                        label: "Date",
                         readOnly: true,
                         controller: null,
                         hintText: "${date.day} - ${date.month} - ${date.year}",
-                        obscureText: false,
                         textInputType: TextInputType.number,
-                        suffixWidget: null,
-                        labelTextStyle: const TextStyle(
-                          color: kPrimary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        prefixIcon: const Icon(Icons.calendar_month),
                       ),
                     ),
                     SizedBox(width: size.width * 0.1),
                     Expanded(
-                      child: CustomTextField(
+                      child: RegularTextField(
                         onTap: () async {
                           await pickDateTime();
                         },
                         readOnly: true,
-                        label: "Time",
                         controller: null,
                         hintText: "${date.hour} : ${date.minute}",
-                        obscureText: false,
                         textInputType: TextInputType.number,
-                        suffixWidget: null,
-                        labelTextStyle: const TextStyle(
-                          color: kPrimary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        prefixIcon: const Icon(Icons.access_time_rounded),
                       ),
                     ),
                   ],
