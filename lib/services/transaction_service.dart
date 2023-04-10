@@ -15,6 +15,9 @@ class TransactionService {
     try {
       String endpoint = "transaction?page=$page&per_page=30";
 
+      print(token);
+      print("$baseUrl$endpoint");
+
       final response = await http.get(
         Uri.parse("$baseUrl$endpoint"),
         headers: {"Authorization": "Bearer $token"},
@@ -40,7 +43,8 @@ class TransactionService {
       } else if (response.statusCode == 404) {
         return [];
       } else {
-        debugPrint("Error code: ${response.statusCode}");
+        debugPrint(
+            "!------------Error transaction list code: ${response.statusCode}");
         debugPrint(response.body);
         return null;
       }

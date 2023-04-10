@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pocket_guard/pages/auth_screens/forgot_password.dart';
 import 'package:pocket_guard/pages/auth_screens/sign_up_screen.dart';
 import 'package:pocket_guard/utilities/constants.dart';
 import 'package:pocket_guard/widgets/custom_button.dart';
@@ -91,6 +92,25 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Colors.black,
                         ),
                       ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            PageNavigation().pushPage(
+                              context: context,
+                              page: const ForgotPassword(),
+                            );
+                          },
+                          child: Text(
+                            "Forgot password",
+                            style: TextStyle(
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: size.height * 0.03),
                   ],

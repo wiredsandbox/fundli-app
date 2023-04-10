@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_guard/utilities/page_navigation.dart';
+import 'package:pocket_guard/widgets/circular_button.dart';
 
 import '../../utilities/constants.dart';
 import '../../widgets/custom_button.dart';
@@ -18,94 +19,114 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            PageNavigation().popPagesMultipleTimes(context: context, times: 1);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-        ),
-        title: const Text(
-          "Forgot password",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 25,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: kScaffoldBackground,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Enter your email\n"
-              "We'll send a link "
-              "for you to reset"
-              "Your password",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 25,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: size.height * 0.05),
-            CustomTextField(
-              label: 'Email',
-              controller: _emailController,
-              hintText: "Enter your email",
-              obscureText: false,
-              textInputType: TextInputType.text,
-              suffixWidget: null,
-            ),
-            SizedBox(height: size.height * 0.1),
-            Center(
-              child: CustomButton(
-                padding: EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: size.width * 0.3,
-                ),
-                borderColor: Colors.black,
-                color: Colors.black,
-                borderRadius: 20,
-                onTap: () {},
-                child: const Text(
-                  "Sign up",
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Or",
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    "Log in",
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CircularButton(
+                      internalPadding: const EdgeInsets.only(left: 6),
+                      iconData: Icons.arrow_back_ios,
+                      onPressed: () {
+                        PageNavigation()
+                            .popPagesMultipleTimes(context: context, times: 1);
+                      }),
+                  const Text(
+                    "Forgot password",
                     style: TextStyle(
-                      decoration: TextDecoration.underline,
+                      color: kPrimary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
+                  SizedBox(
+                    width: size.width * 0.09,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.221,
+                child: Image.asset("assets/images/forgot-password-lock.png",
+                    height: 100, width: 100),
+              ),
+              const SizedBox(height: 32),
+              const Text(
+                "Forgot password?",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
                 ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Please enter your email  to receive a"
+                " verification code to set a new password ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              SizedBox(height: size.height * 0.05),
+              CustomTextField(
+                label: 'Email',
+                controller: _emailController,
+                hintText: "Enter your email",
+                obscureText: false,
+                textInputType: TextInputType.text,
+                suffixWidget: null,
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: CustomButton(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  borderColor: kPrimary,
+                  color: kPrimary,
+                  borderRadius: 8,
+                  onTap: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        "Sign up",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Text(
+              //       "Or",
+              //       style: TextStyle(
+              //         color: Colors.grey[600],
+              //       ),
+              //     ),
+              //     TextButton(
+              //       onPressed: () {},
+              //       child: const Text(
+              //         "Log in",
+              //         style: TextStyle(
+              //           decoration: TextDecoration.underline,
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+            ],
+          ),
         ),
       ),
     );

@@ -42,7 +42,8 @@ class AuthService {
 
         return userAuthModel;
       } else {
-        debugPrint("Error code: ${response.statusCode}");
+        debugPrint(
+            "!------------Error sign up service code: ${response.statusCode}");
         debugPrint(response.body);
         return null;
       }
@@ -83,7 +84,8 @@ class AuthService {
 
         return userAuthModel;
       } else {
-        debugPrint("!------------Error code: ${response.statusCode}");
+        debugPrint(
+            "!------------Error login service code: ${response.statusCode}");
         debugPrint(response.body);
         return null;
       }
