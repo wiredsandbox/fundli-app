@@ -74,7 +74,15 @@ class UserAuthProvider with ChangeNotifier {
     return response;
   }
 
-  Future forgotPasswordOTP({required String otp}) async {}
+  Future forgotPasswordConfirmOTP({
+    required String code,
+    required String email,
+  }) async {
+    final response =
+        await _authService.forgotPasswordConfirmOtp(email: email, code: code);
+
+    return response;
+  }
 
   Future fetchUserAccount() async {
     try {

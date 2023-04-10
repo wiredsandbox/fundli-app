@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_guard/pages/auth_screens/create_new_password.dart';
 import 'package:pocket_guard/widgets/otp_text_field.dart';
+import 'package:provider/provider.dart';
 
+import '../../provider/user_auth_provider.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/page_navigation.dart';
+import '../../utilities/show_snack_bar.dart';
 import '../../widgets/circular_button.dart';
 import '../../widgets/custom_button.dart';
 
@@ -97,24 +100,27 @@ class _ForgotPasswordVerifyEmailState extends State<ForgotPasswordVerifyEmail> {
                         color: kPrimary,
                         borderRadius: 8,
                         onTap: () async {
-                          // if (code.isNotEmpty) {
-                          //   bool success = await context
-                          //       .read<UserAuthProvider>()
-                          //       .forgotPasswordLink(email: code);
-                          //
-                          //   await Future.delayed(
-                          //       const Duration(milliseconds: 100), () {
-                          //     if (success) {
-                          //       //PageNavigation().pushPage(context: context, page: page)
-                          //     }
-                          //   });
-                          // } else {
-                          //   showSnackBar(
-                          //       context: context, text: "Enter your email");
-                          // }
-                          PageNavigation().pushPage(
-                              context: context,
-                              page: const CreateNewPassword());
+                          if (code.isNotEmpty && code.length == 6) {
+                            bool success = await context
+                                .read<UserAuthProvider>()
+                                .forgotPasswordConfirmOTP(
+                                  email: widget.email,
+                                  code: code,
+                                );
+
+                            await Future.delayed(
+                                const Duration(milliseconds: 100), () {
+                              if (success) {
+                                PageNavigation().pushPage(
+                                  context: context,
+                                  page: const CreateNewPassword(),
+                                );
+                              }
+                            });
+                          } else {
+                            showSnackBar(
+                                context: context, text: "Enter the full code");
+                          }
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +137,19 @@ class _ForgotPasswordVerifyEmailState extends State<ForgotPasswordVerifyEmail> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        bool success = await context
+                            .read<UserAuthProvider>()
+                            .forgotPasswordLink(email: widget.email);
+
+                        Future.delayed(const Duration(milliseconds: 100), () {
+                          showSnackBar(
+                              context: context,
+                              text: success
+                                  ? "We sent the code to: ${widget.email}"
+                                  : "We couldn't process that");
+                        });
+                      },
                       child: const Text(
                         "Resend code",
                         style: TextStyle(

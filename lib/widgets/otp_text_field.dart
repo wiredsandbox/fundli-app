@@ -14,61 +14,33 @@ class OTPTextField extends StatefulWidget {
 }
 
 class _OTPTextFieldState extends State<OTPTextField> {
-  String value1 = '';
-  String value2 = '';
-  String value3 = '';
-  String value4 = '';
+  List<String> values = [];
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Form(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _OTPTextFieldCell(
-            size: size,
-            onChanged: (pin) {
-              value1 = pin;
+    return Container(
+      color: Colors.transparent,
+      height: size.height * 0.115,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 6,
+          itemBuilder: (context, index) {
+            return _OTPTextFieldCell(
+              size: size,
+              onChanged: (pin) {
+                setState(() {
+                  values.length <= index + 1
+                      ? values.add(pin)
+                      : values[index] = pin;
+                });
 
-              if (value1.isNotEmpty) {
-                FocusScope.of(context).nextFocus();
-              }
-            },
-          ),
-          _OTPTextFieldCell(
-            size: size,
-            onChanged: (pin) {
-              value2 = pin;
-
-              if (value2.isNotEmpty) {
-                FocusScope.of(context).nextFocus();
-              }
-            },
-          ),
-          _OTPTextFieldCell(
-            size: size,
-            onChanged: (pin) {
-              value3 = pin;
-
-              if (value3.isNotEmpty) {
-                FocusScope.of(context).nextFocus();
-              }
-            },
-          ),
-          _OTPTextFieldCell(
-            size: size,
-            onChanged: (pin) {
-              value4 = pin;
-
-              if (value4.isNotEmpty) {
-                FocusScope.of(context).nextFocus();
-                widget.onChanged(value1 + value2 + value3 + value4);
-              }
-            },
-          ),
-        ],
-      ),
+                if (values.length >= index && pin.isNotEmpty) {
+                  FocusScope.of(context).nextFocus();
+                }
+              },
+            );
+          }),
     );
   }
 }
@@ -84,42 +56,45 @@ class _OTPTextFieldCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.width * 0.12,
-      decoration: BoxDecoration(
-        color: kOTPTextField,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TextFormField(
-            onChanged: onChanged,
-            style: const TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.w600,
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: Container(
+        width: size.width * 0.12,
+        decoration: BoxDecoration(
+          color: kOTPTextField,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextFormField(
+              onChanged: onChanged,
+              style: const TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.w600,
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(1),
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              decoration: const InputDecoration(
+                  hintText: "_",
+                  hintStyle: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  )),
             ),
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(1),
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            decoration: const InputDecoration(
-                hintText: "-",
-                hintStyle: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w600,
-                ),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                )),
-          ),
-          Container(
-            height: 3,
-            width: double.infinity,
-            color: kOTPTextField,
-          ),
-        ],
+            Container(
+              height: 3,
+              width: double.infinity,
+              color: kOTPTextField,
+            ),
+          ],
+        ),
       ),
     );
   }

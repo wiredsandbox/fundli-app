@@ -113,6 +113,26 @@ class AuthService {
     }
   }
 
+  Future<bool> forgotPasswordConfirmOtp({
+    required String email,
+    required String code,
+  }) async {
+    try {
+      String endpoint = "account/forgot-password";
+
+      Dio dio = Dio();
+
+      dio.options.headers.addAll({"Content-Type": "application/json"});
+
+      await dio.post("$baseUrl$endpoint", data: {"email": email, "code": code});
+
+      return true;
+    } catch (e) {
+      debugPrint("Caught error with sign up service: $e");
+      return false;
+    }
+  }
+
   Future<UserAuthModel?> fetchUserAccount({required String token}) async {
     String endpoint = "account/me/";
 
