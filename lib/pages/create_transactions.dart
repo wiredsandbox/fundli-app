@@ -54,6 +54,17 @@ class _CreateTransactionsState extends State<CreateTransactions> {
     });
   }
 
+  setAmountValue(value) {
+    String updatedText = _amountController.text + value;
+
+    _amountController.value = _amountController.value.copyWith(
+      text: updatedText,
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: updatedText.length),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -153,10 +164,14 @@ class _CreateTransactionsState extends State<CreateTransactions> {
                   textInputType: TextInputType.number,
                   suffix: InkWell(
                     onTap: () async {
-                      double? amount = await PageNavigation().pushPage(
+                      String? amount = await PageNavigation().pushPage(
                         context: context,
                         page: const TransactionCalculator(),
                       );
+
+                      if (amount != null) {
+                        setAmountValue(amount);
+                      }
                     },
                     child: const Icon(Icons.calculate_outlined),
                   ),

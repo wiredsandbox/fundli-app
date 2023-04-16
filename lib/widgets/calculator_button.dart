@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class CalculatorButton extends StatefulWidget {
   final Color color;
-  final Widget child;
+  final String text;
   final VoidCallback onTap;
   const CalculatorButton({
     Key? key,
     required this.color,
-    required this.child,
+    required this.text,
     required this.onTap,
   }) : super(key: key);
 
@@ -18,18 +18,20 @@ class CalculatorButton extends StatefulWidget {
 class _CalculatorButtonState extends State<CalculatorButton> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return InkWell(
       onTap: widget.onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 5),
         child: Container(
-          height: 72,
+          height: size.height * 0.088,
+          width: size.width * 0.19,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             color: widget.color,
           ),
           child: Center(
-            child: widget.child,
+            child: Text(widget.text),
           ),
         ),
       ),
