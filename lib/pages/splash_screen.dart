@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:pocket_guard/pages/home_page.dart';
+import 'package:pocket_guard/pages/main_page.dart';
 import 'package:pocket_guard/services/jwt_service.dart';
 import 'package:pocket_guard/services/storage_service.dart';
 import 'package:pocket_guard/utilities/page_navigation.dart';
@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
       await Future.delayed(duration, () {
         PageNavigation().replacePage(
           context: context,
-          page: tokenExpired ? const AuthHome() : const HomePage(),
+          page: tokenExpired ? const AuthHome() : const MainPage(),
         );
       });
     } else {
