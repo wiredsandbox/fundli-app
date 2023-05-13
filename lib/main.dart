@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pocket_guard/pages/splash_screen.dart';
 import 'package:pocket_guard/provider/transaction_provider.dart';
+import 'package:pocket_guard/provider/wallet_provider.dart';
 import 'package:pocket_guard/utilities/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => UserAuthProvider()),
         ChangeNotifierProvider(create: (_) => TransactionProvider()),
+        ChangeNotifierProvider(create: (_) => WalletProvider()),
       ],
       child: const MyApp(),
     ),

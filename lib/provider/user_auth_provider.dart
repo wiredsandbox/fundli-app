@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pocket_guard/pages/home_page.dart';
+import 'package:pocket_guard/pages/main_page.dart';
 import 'package:pocket_guard/services/auth_service.dart';
 import 'package:pocket_guard/services/storage_service.dart';
 import 'package:pocket_guard/utilities/show_snack_bar.dart';
@@ -37,7 +37,7 @@ class UserAuthProvider with ChangeNotifier {
 
       PageNavigation().replacePage(
         context: context,
-        page: const HomePage(),
+        page: const MainPage(),
       );
     } else {
       showSnackBar(context: context, text: "An error occurred");
@@ -61,7 +61,7 @@ class UserAuthProvider with ChangeNotifier {
 
       PageNavigation().replacePage(
         context: context,
-        page: const HomePage(),
+        page: const MainPage(),
       );
     } else {
       showSnackBar(context: context, text: "An error occurred");

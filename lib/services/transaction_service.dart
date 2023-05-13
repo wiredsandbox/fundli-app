@@ -89,4 +89,9 @@ class TransactionService {
       return null;
     }
   }
+
+  Future<TransactionModel?> editTransaction({
+    required String token,
+    required TransactionModel transactionModel,
+  }) async {}
 }
